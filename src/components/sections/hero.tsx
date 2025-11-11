@@ -1,0 +1,19 @@
+export default function HeroSection() {
+  return (
+    <section id="home" className="relative h-[60dvh] md:h-dvh w-full overflow-hidden bg-black">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute z-0 w-full h-full object-cover"
+      >
+        <source src="/video/hero.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
+          {/* Content removed as the video is the main focus */}
+      </div>
+    </section>
+  );
+}
