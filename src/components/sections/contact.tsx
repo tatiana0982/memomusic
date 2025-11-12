@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useForm, ValidationError } from "@formspree/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,45 +31,7 @@ function SubmitButton({ pending }: { pending: boolean }) {
 }
 
 export default function ContactSection() {
-  const [pending, setPending] = useState(false);
-  const [result, setResult] = useState("");
-
-const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  setPending(true);
-  setResult("");
-
-  const form = event.currentTarget; // ✅ Save reference before async calls
-  const formData = new FormData(form);
-  formData.append("access_key", "3dbe2c8c-74f7-4afb-855c-79aadbaf2a22");
-
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-      mode: "cors",
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (data.success) {
-      setResult("Message sent successfully!");
-      form.reset(); // ✅ Safe now
-    } else {
-      setResult(data.message || "Something went wrong. Please try again.");
-    }
-  } catch (error) {
-    console.error("Web3Forms error:", error);
-    setResult("Error sending message. Please check your connection.");
-  } finally {
-    setPending(false);
-  }
-};
-
+  const [state, handleSubmit] = useForm("mnnlqypa"); // ✅ Your Formspree form ID
 
   return (
     <section id="contact" className="py-24 sm:py-32 bg-background">
@@ -90,8 +52,8 @@ const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         </div>
 
         <FadeIn delay={0.4} className="mt-16 max-w-2xl mx-auto">
-          {/* ✅ Updated form with Web3Forms API */}
-          <form onSubmit={onSubmit} className="space-y-6">
+          {/* ✅ Updated form to use Formspree */}
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
@@ -113,6 +75,11 @@ const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                   required
                   className="bg-input"
                 />
+                <ValidationError
+                  prefix="Email"
+                  field="email"
+                  errors={state.errors}
+                />
               </div>
             </div>
 
@@ -126,19 +93,24 @@ const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 required
                 className="bg-input"
               />
+              <ValidationError
+                prefix="Message"
+                field="message"
+                errors={state.errors}
+              />
             </div>
 
-            <SubmitButton pending={pending} />
+            <SubmitButton pending={state.submitting} />
 
-            {result && (
-              <p
-                className={`text-center mt-4 font-medium ${
-                  result.includes("successfully")
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
-                {result}
+            {state.succeeded && (
+              <p className="text-center mt-4 font-medium text-green-600">
+                Message sent successfully!
+              </p>
+            )}
+
+            {state.errors?.length > 0 && (
+              <p className="text-center mt-4 font-medium text-red-600">
+                Something went wrong. Please try again.
               </p>
             )}
           </form>
