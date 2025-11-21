@@ -43,7 +43,7 @@ export default function AboutSection() {
                 alt="Ryan Makhoul, founder of MEMO MUSIC"
                 width={400}
                 height={400}
-                className="shadow-2xl aspect-square object-cover"
+                className="rounded-full shadow-2xl aspect-square object-cover"
                 data-ai-hint="man portrait studio"
                 loading="lazy"
               />
