@@ -97,16 +97,6 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
             <div className="text-sm text-gray-500 order-2 sm:order-1 text-center sm:text-left">
               &copy; {currentYear} MEMO MUSIC. All rights reserved.
-           <br />
-      Developed by{" "}
-      <a
-        href="https://www.linkedin.com/in/devjadiya"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-gray-300 hover:text-white transition-colors font-medium"
-      >
-        Dev Jadiya
-      </a>
     </div>
 
             <div className="flex items-center gap-6 order-1 sm:order-2">
